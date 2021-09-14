@@ -24,7 +24,7 @@ class Subject {
   notify() {
     this.observerQueue.forEach(item => {
       if (item.callback) {
-        item.callback()
+        item.callback.call(item.observer)
       } else {
         item.observer.update()
       }
@@ -42,8 +42,8 @@ const sub = new Subject()
 const ob1 = new Observer('zs')
 const ob2 = new Observer('ls')
 const ob3 = { name: 'ob3', update() { console.log(this.name)}}
-sub.addObserver(ob1, () => { console.log(ob1.name)})
-sub.addObserver(ob2, () => { console.log(ob2.name) })
+sub.addObserver(ob1, function () { console.log(this.name)})
+sub.addObserver(ob2, function() { console.log(this.name) })
 sub.addObserver(ob3)
 sub.notify()
 sub.removeObserver(ob1)
@@ -155,18 +155,18 @@ class Subscriber {
   }
 }
 
-var channel = new Channel();
+const channel = new Channel();
 
-var pub1 = new Publisher("报社1", channel);
-var pub2 = new Publisher("报社2", channel);
+const pub1 = new Publisher("报社1", channel);
+const pub2 = new Publisher("报社2", channel);
 
 pub1.addContent("晨报1");
 pub1.addContent("晚报1");
 pub2.addContent("晨报2");
 
-var sub1 = new Subscriber("小明", channel);
-var sub2 = new Subscriber("小红", channel);
-var sub3 = new Subscriber("小张", channel);
+const sub1 = new Subscriber("小明", channel);
+const sub2 = new Subscriber("小红", channel);
+const sub3 = new Subscriber("小张", channel);
 
 sub1.subscribe("晨报1");
 
