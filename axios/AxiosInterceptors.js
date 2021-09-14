@@ -3,6 +3,8 @@ import axios from 'axios';
 const CancelToken = axios.CancelToken
 const axiosRequestTaskQueue = [];
 const CANCEL_MESSAGE = 'INTERCEPT'
+const SILENCE_PERIOD = 1000
+
 const __removeRequestTaskQueue = function (type) {
   if (!type) return undefined
   let result = false
@@ -48,7 +50,9 @@ class AxiosInterceptors {
 
   static responseInterceptor(res) {
     const type = res.config.url + res.config.data
-    __removeRequestTaskQueue(type)
+    setTimeout(() => {
+      __removeRequestTaskQueue(type)
+    }, SILENCE_PERIOD);
     // 添加统一处理
     return res.data
   }
@@ -59,7 +63,9 @@ class AxiosInterceptors {
     }
     if (error.config) {
       const type = error.config.url + error.config.data
-      __removeRequestTaskQueue(type)
+      setTimeout(() => {
+        __removeRequestTaskQueue(type)
+      }, SILENCE_PERIOD);
     }
     // 添加错误统一处理
     return Promise.reject(error)
