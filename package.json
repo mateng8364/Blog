@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/mateng8364/Blog#readme",
   "dependencies": {
-    "axios": "^0.21.4"
+    "axios": "^0.21.4",
+    "express": "^4.17.1"
   }
 }

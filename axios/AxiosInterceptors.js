@@ -36,7 +36,7 @@ export const clearRequestTaskQueue = function () {
 
 class AxiosInterceptors {
   static requestInterceptor(config) {
-    const type = config.baseURL + config.url + JSON.stringify(config.data)
+    const type = config.baseURL + config.url + (config.data instanceof FormData ? String(config.data) : JSON.stringify(config.data))
     let cancel
     config.cancelToken = new CancelToken(c => cancel = c)
     __addRequestTaskQueue(type, cancel, `${config.url} intercept`)
